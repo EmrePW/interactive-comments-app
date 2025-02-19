@@ -13,7 +13,7 @@ function Votes({ vote }) {
         }}
       >
         {/* plus */}
-        <img src="icon-plus.svg" alt="upvote" />
+        <img className="" src="/icon-plus.svg" alt="upvote" />
       </button>
       <p>{newVote}</p>
       <button
@@ -23,7 +23,7 @@ function Votes({ vote }) {
         }}
       >
         {/* minus */}
-        <img src="icon-minus.svg" alt="downvote" />
+        <img src="/icon-minus.svg" alt="downvote" />
       </button>
     </>
   );
@@ -31,12 +31,12 @@ function Votes({ vote }) {
 
 function Reply({ username, imageUrl, content, createdAt, vote, replyingTo }) {
   return (
-    <section className="comment">
-      <section className="votes">
+    <section className="comment flex p-3 align-items-center gap-3 my-3 surface-0 border-round-lg">
+      <section className="votes surface-100 p-2 border-round-lg flex flex-column align-items-center">
         <Votes vote={vote}></Votes>
       </section>
       <section className="comment_head">
-        <div className="comment_author_info">
+        <div className="comment_author_info flex">
           <img
             className="comment_author_image"
             src={imageUrl}
@@ -46,12 +46,13 @@ function Reply({ username, imageUrl, content, createdAt, vote, replyingTo }) {
           <p className="comment_createdAt">{createdAt}</p>
         </div>
         <div className="comment_reply">
-          <button type="button"></button>
+          <img src="icon-reply.svg" alt="reply svg" />
+          <button type="button">REPLY</button>
         </div>
-      </section>
-      <section className="comment_main">
-        @{replyingTo}
-        {content}
+        <section className="comment_main">
+          @{replyingTo}
+          {content}
+        </section>
       </section>
     </section>
   );
@@ -82,25 +83,26 @@ function Comment({ vote, content, createdAt, username, imageUrl, replies }) {
 
   return (
     <>
-      <section className="comment">
-        <section className="votes">
+      <section className="comment flex p-3 align-items-center gap-3 surface-0 border-round-lg">
+        <section className="votes surface-100 p-2 border-round-lg flex flex-column align-items-center">
           <Votes vote={vote}></Votes>
         </section>
         <section className="comment_head">
-          <div className="comment_author_info">
+          <div className="comment_author_info flex">
             <img
               className="comment_author_image"
               src={imageUrl}
-              alt={"profile photo of" + username}
+              alt={"profile photo of " + username}
             />
             <h2 className="comment_author">{username}</h2>
             <p className="comment_createdAt">{createdAt}</p>
           </div>
           <div className="comment_reply">
-            <button type="button"></button>
+            <img src="icon-reply.svg" alt="reply svg" />
+            <button type="button">REPLY</button>
           </div>
+          <section className="comment_main">{content}</section>
         </section>
-        <section className="comment_main">{content}</section>
       </section>
       {renderReplies && <Replies replies={replies}></Replies>}
     </>
@@ -109,10 +111,11 @@ function Comment({ vote, content, createdAt, username, imageUrl, replies }) {
 
 function NewComment({ currentUser }) {
   return (
-    <article className="newComment-wrapper">
+    <article className="newComment-wrapper surface-0 p-3 border-round-lg mb-3">
       <img
+        className=""
         src={currentUser.image.png}
-        alt={"profile photo of" + currentUser.username}
+        alt={"profile photo of " + currentUser.username}
       />
       <form action="">
         <input
@@ -133,7 +136,7 @@ function NewComment({ currentUser }) {
 function Comments({ comments }) {
   const commentList = comments.map((cmt) => {
     return (
-      <section key={cmt.id} className="comment-wrapper">
+      <section key={cmt.id} className="comment-wrapper mb-3 border-round-lg">
         <Comment
           vote={cmt.score}
           content={cmt.content}
@@ -183,7 +186,7 @@ function App() {
   }
   return (
     <main>
-      <section className="main-wrapper">
+      <section className="main-wrapper surface-400 px-3">
         <h1 style={{ textAlign: "center" }}>Comments</h1>
         <Comments comments={data}></Comments>
         <NewComment currentUser={user}></NewComment>
