@@ -1,0 +1,9 @@
+main {
+  display: flex;
+  justify-content: center;
+}
+
+.main-wrapper {
+  width: min(90%, 56rem);
+  outline: 2px red solid;
+}
