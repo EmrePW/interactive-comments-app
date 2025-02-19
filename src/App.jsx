@@ -107,6 +107,8 @@ function Comment({ vote, content, createdAt, username, imageUrl, replies }) {
   );
 }
 
+function NewComment() {}
+
 function Comments({ comments }) {
   const commentList = comments.map((cmt) => {
     return (
