@@ -78,7 +78,7 @@ function Replies({ replies }) {
 function Comment({ vote, content, createdAt, username, imageUrl, replies }) {
   // render reply above 768px
   // check if reply
-  let renderReplies = replies ? true : false;
+  let renderReplies = replies.length === 0 ? false : true;
 
   return (
     <>
