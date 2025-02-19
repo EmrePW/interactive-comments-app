@@ -107,7 +107,28 @@ function Comment({ vote, content, createdAt, username, imageUrl, replies }) {
   );
 }
 
-function NewComment() {}
+function NewComment({ currentUser }) {
+  return (
+    <article className="newComment-wrapper">
+      <img
+        src={currentUser.image.png}
+        alt={"profile photo of" + currentUser.username}
+      />
+      <form action="">
+        <input
+          className="newComment-input"
+          type="text"
+          name="commentContext"
+          id="commentContext"
+          required
+        />
+        <button className="newComment-submit" type="submit">
+          SEND
+        </button>
+      </form>
+    </article>
+  );
+}
 
 function Comments({ comments }) {
   const commentList = comments.map((cmt) => {
@@ -130,14 +151,18 @@ function Comments({ comments }) {
 
 function App() {
   const [data, setData] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // Track loading state
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:4000/comments");
-        const result = await response.json();
-        setData(result);
+        const dataResponse = await fetch("http://localhost:4000/comments");
+        const dataResult = await dataResponse.json();
+        setData(dataResult);
+        const userResponse = await fetch("http://localhost:4000/currentUser");
+        const userResult = await userResponse.json();
+        setUser(userResult);
       } catch (error) {
         console.error("Error fetching data", error);
       } finally {
@@ -153,11 +178,15 @@ function App() {
   if (!data) {
     return <div>No data!</div>;
   }
+  if (!user) {
+    return <div>No user!</div>;
+  }
   return (
     <main>
       <section className="main-wrapper">
         <h1 style={{ textAlign: "center" }}>Comments</h1>
         <Comments comments={data}></Comments>
+        <NewComment currentUser={user}></NewComment>
       </section>
     </main>
   );

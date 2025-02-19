@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+:root {
+  --p-blue-300: hsl(239, 57%, 85%);
+  --p-blue-700: hsl(238, 40%, 52%);
+
+  --p-surface-100: hsl(228, 33%, 97%);
+  --p-surface-400: hsl(223, 19%, 93%);
+  --p-surface-600: hsl(211, 10%, 45%);
+  --p-surface-800: hsl(212, 24%, 26%);
+
+  --p-red-300: hsl(357, 100%, 86%);
+  --p-red-700: hsl(358, 79%, 66%);
+}
+
+body {
+  font-family: "Rubik", serif;
+}
