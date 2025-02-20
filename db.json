@@ -58,6 +58,19 @@
           }
         }
       ]
+    },
+    {
+      "id": "f570",
+      "content": "test",
+      "user": {
+        "image": {
+          "png": "avatars/image-juliusomo.png"
+        },
+        "username": "juliusomo"
+      },
+      "createdAt": "1 second ago",
+      "score": 0,
+      "replies": []
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import "./App.css";
 
 function ReplyButton() {
@@ -97,7 +97,7 @@ function Reply({
       <section className="votes surface-100 p-2 border-round-lg flex flex-column align-items-center">
         <Votes vote={vote}></Votes>
       </section>
-      <section className="comment_head">
+      <section className="comment_head flex-1">
         <div className="flex justify-content-between align-items-center mb-3">
           <div className="comment_author_info flex align-items-center gap-3">
             <img
@@ -160,7 +160,7 @@ function Comment({
         <section className="votes surface-100 p-2 border-round-lg flex flex-column align-items-center">
           <Votes vote={vote}></Votes>
         </section>
-        <section className="comment_head">
+        <section className="comment_head flex-1">
           <div className="flex justify-content-between align-items-center mb-3">
             <div className="comment_author_info flex align-items-center gap-3">
               <img
@@ -187,7 +187,8 @@ function Comment({
   );
 }
 
-function NewComment({ currentUser }) {
+function NewComment({ currentUser, addNewComment, comments }) {
+  const [newCommentContent, setNewCommentContent] = useState("");
   return (
     <article className="newComment-wrapper flex surface-0 p-3 border-round-lg mb-3">
       <img
@@ -203,10 +204,44 @@ function NewComment({ currentUser }) {
           id="commentContext"
           required
           placeholder="Add a comment..."
+          value={newCommentContent}
+          onChange={(e) => {
+            setNewCommentContent(e.target.value);
+          }}
         />
         <button
           className="newComment-submit align-self-start px-4 py-3 bg-blue-700 border-none border-round-lg text-white font-semibold"
           type="submit"
+          onClick={(e) => {
+            e.preventDefault();
+            let new_comments = comments.slice();
+            let new_comment = {
+              content: newCommentContent,
+              user: currentUser,
+              createdAt: "1 second ago",
+              score: 0,
+              replies: [],
+            };
+            const postJson = async () => {
+              try {
+                fetch("http://localhost:4000/comments", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(new_comment),
+                })
+                  .then((response) => response.json())
+                  .then((data) => console.log("Success:", data))
+                  .catch((error) => console.error("Error:", error));
+              } catch (error) {
+                console.error("error in post");
+              } finally {
+                addNewComment([...new_comments, new_comment]); // setData()
+              }
+            };
+            postJson();
+          }}
         >
           SEND
         </button>
@@ -240,6 +275,10 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // Track loading state
 
+  const updateData = (newData) => {
+    setData(newData);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -272,7 +311,11 @@ function App() {
       <section className="main-wrapper surface-100 px-3">
         <h1 style={{ textAlign: "center" }}>Comments</h1>
         <Comments comments={data} currentUser={user}></Comments>
-        <NewComment currentUser={user}></NewComment>
+        <NewComment
+          currentUser={user}
+          addNewComment={updateData}
+          comments={data}
+        ></NewComment>
       </section>
     </main>
   );
