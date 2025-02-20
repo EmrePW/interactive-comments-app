@@ -113,7 +113,7 @@ function Reply({
         </div>
 
         <section className="comment_main text-600">
-          @{replyingTo}
+          {<span className="text-blue-700 font-bold">@{replyingTo} </span>}
           {content}
         </section>
       </section>
