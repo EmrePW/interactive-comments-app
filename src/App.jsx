@@ -31,7 +31,7 @@ function DeleteButton() {
   );
 }
 
-function EditButton() {
+function EditButton({ updateComment }) {
   return (
     <div className="comment_edit flex cursor-pointer align-items-center">
       <img src="icon-edit.svg" alt="edit svg" className="h-1rem w-1rem" />
@@ -39,6 +39,11 @@ function EditButton() {
         style={{ fontFamily: "inherit" }}
         className="border-none outline-none text-blue-700 surface-0 cursor-pointer font-medium text-base px-2 py-3"
         type="button"
+        onClick={() => {
+          // show textarea and button form get input then update
+
+          updateComment();
+        }}
       >
         Edit
       </button>
@@ -164,6 +169,9 @@ function Comment({
 
   let renderReplies = replies.length === 0 ? false : true;
   const [commentContent, setCommentContent] = useState(content);
+  const updateContent = (newContent) => {
+    setCommentContent(newContent);
+  };
   return (
     <>
       <section className="comment flex p-3 align-items-start gap-3 surface-0 border-round-lg">
@@ -187,7 +195,7 @@ function Comment({
 
             {renderYou ? (
               <div className="flex gap-3">
-                <DeleteButton /> <EditButton />
+                <DeleteButton /> <EditButton updateComment={updateContent} />
               </div>
             ) : (
               <ReplyButton />

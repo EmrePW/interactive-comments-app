@@ -71,6 +71,19 @@
       "createdAt": "1 second ago",
       "score": 0,
       "replies": []
+    },
+    {
+      "id": "3726",
+      "content": "hai",
+      "user": {
+        "image": {
+          "png": "avatars/image-juliusomo.png"
+        },
+        "username": "juliusomo"
+      },
+      "createdAt": "1 second ago",
+      "score": 0,
+      "replies": []
     }
   ]
 }
