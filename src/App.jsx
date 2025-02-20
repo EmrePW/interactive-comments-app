@@ -1,7 +1,39 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
-function ReplyButton() {
+function EditCommentField({
+  commentContent,
+  updateEditingState,
+  editing,
+  updateCommentContent,
+}) {
+  const [content, setContent] = useState(commentContent);
+  return (
+    <div className="flex gap-3 flex-column align-items-end">
+      <textarea
+        className="outline-none border-round-lg border-2 border-solid border-400 p-3 w-full"
+        name="editedCommentContent"
+        id="editedCommentContent"
+        value={content}
+        onChange={(e) => {
+          setContent(e.target.value);
+        }}
+      />
+      <button
+        type="button"
+        className="align-self-end px-4 py-3 bg-blue-700 border-none border-round-lg text-white font-semibold cursor-pointer"
+        onClick={() => {
+          updateCommentContent(content);
+          updateEditingState(!editing);
+        }}
+      >
+        UPDATE
+      </button>
+    </div>
+  );
+}
+
+function ReplyCommentButton() {
   return (
     <div className="comment_reply flex cursor-pointer align-items-center">
       <img src="icon-reply.svg" alt="reply svg" className="h-1rem w-1rem" />
@@ -16,7 +48,7 @@ function ReplyButton() {
   );
 }
 
-function DeleteButton() {
+function DeleteCommentButton() {
   return (
     <div className="comment-delete flex cursor-pointer align-items-center">
       <img src="icon-delete.svg" alt="delte svg" className="h-1rem w-1rem" />
@@ -31,7 +63,7 @@ function DeleteButton() {
   );
 }
 
-function EditButton({ updateComment }) {
+function EditCommentButton({ updateEditingState, editing }) {
   return (
     <div className="comment_edit flex cursor-pointer align-items-center">
       <img src="icon-edit.svg" alt="edit svg" className="h-1rem w-1rem" />
@@ -40,10 +72,9 @@ function EditButton({ updateComment }) {
         className="border-none outline-none text-blue-700 surface-0 cursor-pointer font-medium text-base px-2 py-3"
         type="button"
         onClick={() => {
-          // show textarea and button form get input then update
-
-          updateComment();
+          updateEditingState(!editing);
         }}
+        disabled={editing}
       >
         Edit
       </button>
@@ -119,10 +150,10 @@ function Reply({
           </div>
           {renderYou ? (
             <div className="flex gap-3">
-              <DeleteButton /> <EditButton />
+              <DeleteCommentButton /> <EditCommentButton />
             </div>
           ) : (
-            <ReplyButton />
+            <ReplyCommentButton />
           )}
         </div>
 
@@ -166,12 +197,21 @@ function Comment({
   // render reply above 768px
   // check if reply
   let renderYou = currentUser.username === username;
+  const [commentContent, setCommentContent] = useState(content); // state for dyanmic content
+  const [editing, setEditing] = useState(false);
+  // char state tutulacak
 
-  let renderReplies = replies.length === 0 ? false : true;
-  const [commentContent, setCommentContent] = useState(content);
-  const updateContent = (newContent) => {
+  // EDITING FALSE
+  const updateEditingState = (newState) => {
+    setEditing(newState);
+  };
+
+  // function will go to EDITING TRUE
+  const updateCommentContent = (newContent) => {
     setCommentContent(newContent);
   };
+
+  let renderReplies = replies.length === 0 ? false : true;
   return (
     <>
       <section className="comment flex p-3 align-items-start gap-3 surface-0 border-round-lg">
@@ -195,13 +235,31 @@ function Comment({
 
             {renderYou ? (
               <div className="flex gap-3">
-                <DeleteButton /> <EditButton updateComment={updateContent} />
+                <DeleteCommentButton />{" "}
+                <EditCommentButton
+                  updateEditingState={updateEditingState}
+                  editing={editing}
+                />
               </div>
             ) : (
-              <ReplyButton />
+              <ReplyCommentButton />
             )}
           </div>
-          <section className="comment_main text-600">{commentContent}</section>
+
+          {
+            editing ? (
+              <EditCommentField
+                commentContent={commentContent}
+                updateEditingState={updateEditingState}
+                editing={editing}
+                updateCommentContent={updateCommentContent}
+              />
+            ) : (
+              <section className="comment_main text-600">
+                {commentContent}
+              </section>
+            ) /* Editing comment field*/
+          }
         </section>
       </section>
       {renderReplies && (
@@ -234,7 +292,7 @@ function NewComment({ currentUser, addNewComment, comments }) {
           }}
         />
         <button
-          className="newComment-submit align-self-start px-4 py-3 bg-blue-700 border-none border-round-lg text-white font-semibold"
+          className="newComment-submit align-self-start px-4 py-3 bg-blue-700 border-none border-round-lg text-white font-semibold cursor-pointer"
           type="submit"
           onClick={(e) => {
             e.preventDefault();
