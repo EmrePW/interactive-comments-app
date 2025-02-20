@@ -16,29 +16,32 @@ function ReplyButton() {
   );
 }
 
-function DeleteAndEditButton() {
+function DeleteButton() {
   return (
-    <div className="flex gap-3">
-      <div className="comment-delete flex cursor-pointer align-items-center">
-        <img src="icon-delete.svg" alt="delte svg" className="h-1rem w-1rem" />
-        <button
-          style={{ fontFamily: "inherit" }}
-          className="border-none outline-none text-red-700 surface-0 cursor-pointer font-medium text-base px-2 py-3"
-          type="button"
-        >
-          Delete
-        </button>
-      </div>
-      <div className="comment_edit flex cursor-pointer align-items-center">
-        <img src="icon-edit.svg" alt="edit svg" className="h-1rem w-1rem" />
-        <button
-          style={{ fontFamily: "inherit" }}
-          className="border-none outline-none text-blue-700 surface-0 cursor-pointer font-medium text-base px-2 py-3"
-          type="button"
-        >
-          Edit
-        </button>
-      </div>
+    <div className="comment-delete flex cursor-pointer align-items-center">
+      <img src="icon-delete.svg" alt="delte svg" className="h-1rem w-1rem" />
+      <button
+        style={{ fontFamily: "inherit" }}
+        className="border-none outline-none text-red-700 surface-0 cursor-pointer font-medium text-base px-2 py-3"
+        type="button"
+      >
+        Delete
+      </button>
+    </div>
+  );
+}
+
+function EditButton() {
+  return (
+    <div className="comment_edit flex cursor-pointer align-items-center">
+      <img src="icon-edit.svg" alt="edit svg" className="h-1rem w-1rem" />
+      <button
+        style={{ fontFamily: "inherit" }}
+        className="border-none outline-none text-blue-700 surface-0 cursor-pointer font-medium text-base px-2 py-3"
+        type="button"
+      >
+        Edit
+      </button>
     </div>
   );
 }
@@ -109,7 +112,13 @@ function Reply({
             {renderYou && <YouIndicator />}
             <p className="comment_createdAt text-600">{createdAt}</p>
           </div>
-          {renderYou ? <DeleteAndEditButton /> : <ReplyButton />}
+          {renderYou ? (
+            <div className="flex gap-3">
+              <DeleteButton /> <EditButton />
+            </div>
+          ) : (
+            <ReplyButton />
+          )}
         </div>
 
         <section className="comment_main text-600">
@@ -154,6 +163,7 @@ function Comment({
   let renderYou = currentUser.username === username;
 
   let renderReplies = replies.length === 0 ? false : true;
+  const [commentContent, setCommentContent] = useState(content);
   return (
     <>
       <section className="comment flex p-3 align-items-start gap-3 surface-0 border-round-lg">
@@ -175,9 +185,15 @@ function Comment({
               <p className="comment_createdAt text-600">{createdAt}</p>
             </div>
 
-            {renderYou ? <DeleteAndEditButton /> : <ReplyButton />}
+            {renderYou ? (
+              <div className="flex gap-3">
+                <DeleteButton /> <EditButton />
+              </div>
+            ) : (
+              <ReplyButton />
+            )}
           </div>
-          <section className="comment_main text-600">{content}</section>
+          <section className="comment_main text-600">{commentContent}</section>
         </section>
       </section>
       {renderReplies && (
