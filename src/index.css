@@ -8,3 +8,8 @@ img,
 svg {
   display: block;
 }
+
+textarea {
+  font-family: inherit;
+  resize: none;
+}
