@@ -4,12 +4,17 @@
   box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+}
+
 img,
 svg {
   display: block;
 }
 
-textarea {
+textarea,
+button {
   font-family: inherit;
   resize: none;
 }

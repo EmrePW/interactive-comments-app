@@ -5,6 +5,7 @@ export const EditCommentField = ({
   updateEditingState,
   editing,
   updateCommentContent,
+  currentComment,
 }) => {
   const [content, setContent] = useState(commentContent);
   return (
@@ -22,8 +23,30 @@ export const EditCommentField = ({
         type="button"
         className="align-self-end px-4 py-3 bg-blue-700 border-none border-round-lg text-white font-semibold cursor-pointer"
         onClick={() => {
-          updateCommentContent(content);
-          updateEditingState(!editing);
+          const updateJson = async () => {
+            try {
+              fetch(`http://localhost:4000/comments/${currentComment}`, {
+                method: "PATCH",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  content: content,
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => console.log(data))
+                .catch((error) => console.error("Error:", error));
+            } catch {
+              console.error(
+                "An error has occured while trying to update comment!"
+              );
+            } finally {
+              updateCommentContent(content);
+              updateEditingState(!editing);
+            }
+          };
+          updateJson();
         }}
       >
         UPDATE

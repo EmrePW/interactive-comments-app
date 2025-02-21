@@ -9,6 +9,7 @@ import { Replies } from "./Replies";
 import { ReplyCommentButton } from "./ReplyCommentButton";
 
 export const Comment = ({
+  id,
   vote,
   content,
   createdAt,
@@ -23,6 +24,13 @@ export const Comment = ({
   const [commentContent, setCommentContent] = useState(content); // state for dyanmic content
   const [editing, setEditing] = useState(false);
   // char state tutulacak
+  const [commentOperation, setCommentOperation] = useState("N");
+  /*
+  N : Not doing anything,
+  R: Replying
+  U: Editing
+  D: Deleting
+  */
 
   // EDITING FALSE
   const updateEditingState = (newState) => {
@@ -58,7 +66,7 @@ export const Comment = ({
 
             {renderYou ? (
               <div className="flex gap-3">
-                <DeleteCommentButton />{" "}
+                <DeleteCommentButton />
                 <EditCommentButton
                   updateEditingState={updateEditingState}
                   editing={editing}
@@ -76,6 +84,7 @@ export const Comment = ({
                 updateEditingState={updateEditingState}
                 editing={editing}
                 updateCommentContent={updateCommentContent}
+                currentComment={id}
               />
             ) : (
               <section className="comment_main text-600">
@@ -85,6 +94,7 @@ export const Comment = ({
           }
         </section>
       </section>
+      {/* for replying to a comment if it doesnt have replies before open a new section for it */}
       {renderReplies && (
         <Replies replies={replies} currentUser={currentUser}></Replies>
       )}

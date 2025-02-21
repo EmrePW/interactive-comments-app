@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import "./App.css";
 import { Comments } from "./components/comments";
 import { NewComment } from "./components/NewComment";
+import { DeletePopup } from "./components/DeletePopup";
 
 const App = () => {
   const [data, setData] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // Track loading state
+  const [showDeletePopup, setDeletePopup] = useState(false);
 
   const updateData = (newData) => {
     setData(newData);
@@ -40,8 +42,9 @@ const App = () => {
     return <div>No user!</div>;
   }
   return (
-    <main>
+    <main className="">
       <section className="main-wrapper surface-100 px-3">
+        {!showDeletePopup && <DeletePopup />}
         <h1 style={{ textAlign: "center" }}>Comments</h1>
         <Comments comments={data} currentUser={user}></Comments>
         <NewComment

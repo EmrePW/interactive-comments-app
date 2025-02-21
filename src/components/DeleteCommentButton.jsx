@@ -1,4 +1,5 @@
 import React from "react";
+import { DeletePopup } from "./DeletePopup";
 
 export const DeleteCommentButton = () => {
   return (

@@ -6,6 +6,7 @@ export const Comments = ({ comments, currentUser }) => {
     return (
       <section key={cmt.id} className="comment-wrapper mb-3 border-round-lg">
         <Comment
+          id={cmt.id}
           vote={cmt.score}
           content={cmt.content}
           createdAt={cmt.createdAt}
