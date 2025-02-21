@@ -66,7 +66,7 @@ export const Comment = ({
 
             {renderYou ? (
               <div className="flex gap-3">
-                <DeleteCommentButton />
+                <DeleteCommentButton id={id} />
                 <EditCommentButton
                   updateEditingState={updateEditingState}
                   editing={editing}

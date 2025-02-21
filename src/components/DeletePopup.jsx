@@ -1,6 +1,8 @@
-import React, { useContext } from "react";
+import { React, useContext } from "react";
+import { ModalContext } from "../App";
 
-export const DeletePopup = () => {
+export const DeletePopup = ({ id, updateData, comments }) => {
+  const { showDeletePopup, setDeletePopup } = useContext(ModalContext);
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black-alpha-50 z-4">
       <div
@@ -20,6 +22,7 @@ export const DeletePopup = () => {
               let deleteState;
               console.log(deleteState);
               console.log("clicked no!");
+              setDeletePopup(!showDeletePopup);
             }}
           >
             NO, CANCEL
@@ -28,10 +31,32 @@ export const DeletePopup = () => {
             className="bg-red-700 text-white border-none px-4 py-3 font-semibold text-l border-round-lg cursor-pointer flex-1"
             type="button"
             onClick={() => {
-              // set delete to false
+              console.log("clicked yes!");
               // update data
               // update json
-              console.log("clicked yes!");
+              // set delete to false
+              const deleteCommentInDb = async (cid) => {
+                try {
+                  await fetch(`http://localhost:4000/comments/${cid}`, {
+                    method: "DELETE",
+                  })
+                    .then((response) => response.json())
+                    .then((data) => console.log("Deleted successfully", data))
+                    .catch((error) => console.error("Error:", error));
+                } catch (err) {
+                  console.error(
+                    "An error has occured while deleting comment with id " +
+                      cid +
+                      " " +
+                      err
+                  );
+                } finally {
+                  setDeletePopup(!showDeletePopup);
+                  // update data
+                  updateData(comments.filter((prd) => prd.id !== cid));
+                }
+              };
+              deleteCommentInDb(id);
             }}
           >
             YES, DELETE
