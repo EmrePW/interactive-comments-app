@@ -8,14 +8,14 @@
   "comments": [
     {
       "id": "2",
-      "content": "Woah, your project looks awesome! How long have you been coding for? I'm still new, but think I want to dive into React as well soon. Perhaps you can give me an insight on where I can learn React? Thanks!",
+      "content": "Woah, your project looks awesome! How long have you been coding for? I'm still new, but think I want to dive into React as well soon.",
       "createdAt": "2 weeks ago",
       "score": 5,
       "user": {
         "image": {
           "png": "avatars/image-maxblagun.png"
         },
-        "username": "maxblagun"
+        "username": "juliusomo"
       },
       "replies": [
         {
@@ -33,7 +33,7 @@
         },
         {
           "id": 4,
-          "content": "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
+          "content": "I couldn't agree more with this. Everythingfrfrfrfrfrfr",
           "createdAt": "2 days ago",
           "score": 2,
           "replyingTo": "ramsesmiron",

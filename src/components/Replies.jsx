@@ -1,11 +1,12 @@
 import React from "react";
 import { Reply } from "./Reply";
 
-export const Replies = ({ replies, currentUser }) => {
+export const Replies = ({ replies, currentUser, sourceComment }) => {
   const replyList = replies.map((rpl) => {
     return (
       <Reply
         key={rpl.id}
+        id={rpl.id}
         username={rpl.user.username}
         imageUrl={rpl.user.image.png}
         content={rpl.content}
@@ -13,6 +14,7 @@ export const Replies = ({ replies, currentUser }) => {
         vote={rpl.score}
         replyingTo={rpl.replyingTo}
         currentUser={currentUser}
+        sourceComment={sourceComment}
       ></Reply>
     );
   });

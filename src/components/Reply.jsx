@@ -1,11 +1,13 @@
-import React from "react";
+import { React, useState } from "react";
 import { Votes } from "./Votes";
 import { YouIndicator } from "./YouIndicator";
 import { DeleteCommentButton } from "./DeleteCommentButton";
 import { EditCommentButton } from "./EditCommentButon";
 import { ReplyCommentButton } from "./ReplyCommentButton";
+import { EditCommentField } from "./EditCommentField";
 
 export const Reply = ({
+  id,
   username,
   imageUrl,
   content,
@@ -13,8 +15,21 @@ export const Reply = ({
   vote,
   replyingTo,
   currentUser,
+  sourceComment,
 }) => {
   let renderYou = username === currentUser.username;
+  const [editing, setEditing] = useState(false);
+  const [commentContent, setCommentContent] = useState(content); // state for dyanmic content
+
+  // EDITING FALSE
+  const updateEditingState = (newState) => {
+    setEditing(newState);
+  };
+
+  // function will go to EDITING TRUE
+  const updateCommentContent = (newContent) => {
+    setCommentContent(newContent);
+  };
 
   return (
     <section className="comment flex p-3 align-items-start gap-3 my-3 surface-0 border-round-lg">
@@ -35,18 +50,34 @@ export const Reply = ({
           </div>
           {renderYou ? (
             <div className="flex gap-3">
-              <DeleteCommentButton /> <EditCommentButton />
+              <DeleteCommentButton id={id} />
+              <EditCommentButton
+                updateEditingState={updateEditingState}
+                editing={editing}
+              />
               {/* updateEditingState is missing here*/}
             </div>
           ) : (
             <ReplyCommentButton />
           )}
         </div>
-
-        <section className="comment_main text-600">
-          {<span className="text-blue-700 font-bold">@{replyingTo} </span>}
-          {content}
-        </section>
+        {
+          editing ? (
+            <EditCommentField
+              commentContent={commentContent}
+              updateEditingState={updateEditingState}
+              editing={editing}
+              updateCommentContent={updateCommentContent}
+              currentComment={id}
+              sourceComment={sourceComment}
+            />
+          ) : (
+            <section className="comment_main text-600">
+              {<span className="font-bold text-blue-700">@{replyingTo} </span>}
+              {commentContent}
+            </section>
+          ) /* Editing comment field*/
+        }
       </section>
     </section>
   );

@@ -96,7 +96,11 @@ export const Comment = ({
       </section>
       {/* for replying to a comment if it doesnt have replies before open a new section for it */}
       {renderReplies && (
-        <Replies replies={replies} currentUser={currentUser}></Replies>
+        <Replies
+          replies={replies}
+          currentUser={currentUser}
+          sourceComment={id}
+        ></Replies>
       )}
     </>
   );

@@ -6,6 +6,7 @@ export const EditCommentField = ({
   editing,
   updateCommentContent,
   currentComment,
+  sourceComment,
 }) => {
   const [content, setContent] = useState(commentContent);
   return (
@@ -25,21 +26,49 @@ export const EditCommentField = ({
         onClick={() => {
           const updateJson = async () => {
             try {
-              fetch(`http://localhost:4000/comments/${currentComment}`, {
-                method: "PATCH",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  content: content,
-                }),
-              })
-                .then((response) => response.json())
-                .then((data) => console.log(data))
-                .catch((error) => console.error("Error:", error));
-            } catch {
+              if (sourceComment == null) {
+                fetch(`http://localhost:4000/comments/${currentComment}`, {
+                  method: "PATCH",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    content: content,
+                  }),
+                })
+                  .then((response) => response.json())
+                  .then((data) => console.log(data))
+                  .catch((error) => console.error("Error:", error));
+              } else {
+                //get replies
+                const commentReq = await fetch(
+                  `http://localhost:4000/comments/${sourceComment}`
+                );
+                const comment = await commentReq.json();
+                //modify replies
+                let newReplies = comment.replies;
+
+                let indexOfReply = newReplies.findIndex(
+                  (prd) => prd.id === currentComment
+                );
+                newReplies[indexOfReply].content = content;
+
+                let newComment = comment;
+                newComment.replies = newReplies;
+
+                //put back into db
+                fetch(`http://localhost:4000/comments/${sourceComment}`, {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  // patch replies
+                  body: JSON.stringify(newComment),
+                });
+              }
+            } catch (err) {
               console.error(
-                "An error has occured while trying to update comment!"
+                "An error has occured while trying to update comment!\n" + err
               );
             } finally {
               updateCommentContent(content);
