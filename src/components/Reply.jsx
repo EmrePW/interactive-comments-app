@@ -5,6 +5,7 @@ import { DeleteCommentButton } from "./DeleteCommentButton";
 import { EditCommentButton } from "./EditCommentButon";
 import { ReplyCommentButton } from "./ReplyCommentButton";
 import { EditCommentField } from "./EditCommentField";
+import { NewReplyField } from "./NewReply";
 
 export const Reply = ({
   id,
@@ -59,10 +60,9 @@ export const Reply = ({
                 updateEditingState={updateEditingState}
                 editing={editing}
               />
-              {/* updateEditingState is missing here*/}
             </div>
           ) : (
-            <ReplyCommentButton />
+            <ReplyCommentButton replyId={id} commentId={sourceComment} />
           )}
         </div>
         {

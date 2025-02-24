@@ -50,6 +50,8 @@ const App = () => {
   return (
     <ModalContext.Provider
       value={{
+        data,
+        setData,
         showDeletePopup,
         setDeletePopup,
         commentBeingDeletedId,

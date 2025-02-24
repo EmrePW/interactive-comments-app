@@ -7,6 +7,7 @@ import { EditCommentButton } from "./EditCommentButon";
 import { EditCommentField } from "./EditCommentField";
 import { Replies } from "./Replies";
 import { ReplyCommentButton } from "./ReplyCommentButton";
+import { NewReplyField } from "./NewReply";
 
 export const Comment = ({
   id,
@@ -23,6 +24,8 @@ export const Comment = ({
   let renderYou = currentUser.username === username;
   const [commentContent, setCommentContent] = useState(content); // state for dyanmic content
   const [editing, setEditing] = useState(false);
+  const [replying, setReplying] = useState(false);
+  const [commentReplies, setCommentsReplies] = useState(replies);
   // char state tutulacak
   const [commentOperation, setCommentOperation] = useState("N");
   /*
@@ -40,6 +43,14 @@ export const Comment = ({
   // function will go to EDITING TRUE
   const updateCommentContent = (newContent) => {
     setCommentContent(newContent);
+  };
+
+  const updateReplying = (newReplying) => {
+    setReplying(newReplying);
+  };
+
+  const updateReplies = (newReplies) => {
+    setCommentsReplies(newReplies);
   };
 
   let renderReplies = replies.length === 0 ? false : true;
@@ -73,34 +84,64 @@ export const Comment = ({
                 />
               </div>
             ) : (
-              <ReplyCommentButton />
+              <ReplyCommentButton
+                replying={replying}
+                updateReplying={updateReplying}
+              />
             )}
           </div>
 
-          {
-            editing ? (
-              <EditCommentField
-                commentContent={commentContent}
-                updateEditingState={updateEditingState}
-                editing={editing}
-                updateCommentContent={updateCommentContent}
-                currentComment={id}
-              />
-            ) : (
-              <section className="comment_main text-600">
-                {commentContent}
-              </section>
-            ) /* Editing comment field*/
-          }
+          {editing ? (
+            <EditCommentField
+              commentContent={commentContent}
+              updateEditingState={updateEditingState}
+              editing={editing}
+              updateCommentContent={updateCommentContent}
+              currentComment={id}
+            />
+          ) : (
+            <section className="comment_main text-600">
+              {commentContent}
+            </section>
+          )}
         </section>
       </section>
-      {/* for replying to a comment if it doesnt have replies before open a new section for it */}
-      {renderReplies && (
-        <Replies
-          replies={replies}
-          currentUser={currentUser}
-          sourceComment={id}
-        ></Replies>
+
+      {renderReplies ? (
+        <>
+          <section className="comment_replies">
+            {replying && (
+              <NewReplyField
+                currentUser={currentUser}
+                commentId={id}
+                commentReplies={replies}
+                replyingTo={username}
+                replying={replying}
+                updateReplying={updateReplying}
+                updateReplies={updateReplies}
+              />
+            )}
+          </section>
+          <Replies
+            replies={commentReplies}
+            currentUser={currentUser}
+            sourceComment={id}
+          ></Replies>
+        </>
+      ) : (
+        <section className="comment_replies">
+          {replying && (
+            <NewReplyField
+              currentUser={currentUser}
+              commentId={id}
+              commentReplies={replies}
+              replyingTo={username}
+              replying={replying}
+              updateReplying={updateReplying}
+              updateReplies={updateReplies}
+            />
+          )}
+        </section>
       )}
     </>
   );
