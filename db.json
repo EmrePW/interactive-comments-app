@@ -19,50 +19,7 @@
         },
         "username": "amyrobson"
       },
-      "replies": [
-        {
-          "id": "1740395355036",
-          "content": "gg",
-          "createdAt": "1 second ago",
-          "score": 0,
-          "user": {
-            "image": {
-              "png": "/avatars/image-juliusomo.png",
-              "webp": "/avatars/image-juliusomo.webp"
-            },
-            "username": "juliusomo"
-          },
-          "replyingTo": "amyrobson"
-        },
-        {
-          "id": "1740395496613",
-          "content": "oof",
-          "createdAt": "1 second ago",
-          "score": 0,
-          "user": {
-            "image": {
-              "png": "/avatars/image-juliusomo.png",
-              "webp": "/avatars/image-juliusomo.webp"
-            },
-            "username": "juliusomo"
-          },
-          "replyingTo": "amyrobson"
-        },
-        {
-          "id": "1740395513197",
-          "content": "gg",
-          "createdAt": "1 second ago",
-          "score": 0,
-          "user": {
-            "image": {
-              "png": "/avatars/image-juliusomo.png",
-              "webp": "/avatars/image-juliusomo.webp"
-            },
-            "username": "juliusomo"
-          },
-          "replyingTo": "amyrobson"
-        }
-      ]
+      "replies": []
     },
     {
       "id": "2",
@@ -90,22 +47,22 @@
             },
             "username": "ramsesmiron"
           }
-        },
-        {
-          "id": 4,
-          "content": "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
-          "createdAt": "2 days ago",
-          "score": 2,
-          "replyingTo": "ramsesmiron",
-          "user": {
-            "image": {
-              "png": "/avatars/image-juliusomo.png",
-              "webp": "/avatars/image-juliusomo.webp"
-            },
-            "username": "juliusomo"
-          }
         }
       ]
+    },
+    {
+      "id": "58cb",
+      "content": "testCcc",
+      "user": {
+        "image": {
+          "png": "/avatars/image-juliusomo.png",
+          "webp": "/avatars/image-juliusomo.webp"
+        },
+        "username": "juliusomo"
+      },
+      "createdAt": "1 second ago",
+      "score": 0,
+      "replies": []
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useRef } from "react";
 import "./App.css";
 import { Comments } from "./components/comments";
 import { NewComment } from "./components/NewComment";
@@ -15,6 +15,8 @@ const App = () => {
   const [commentBeingDeletedId, setId] = useState(null);
   const [deletingReply, setDeletingReply] = useState(null);
   const [replyBeingDeletedId, setReplyBeingDeletedId] = useState(null);
+
+  const commentRef = useRef();
 
   const updateData = (newData) => {
     setData(newData);
@@ -33,6 +35,7 @@ const App = () => {
         console.error("Error fetching data", error);
       } finally {
         setLoading(false);
+        console.log(commentRef);
       }
     };
     fetchData();
@@ -70,10 +73,15 @@ const App = () => {
               replyBeingDeletedId={replyBeingDeletedId}
               updateData={updateData}
               comments={data}
+              updateReplies={commentRef.current.updateReplies}
             />
           )}
           <h1 style={{ textAlign: "center" }}>Comments</h1>
-          <Comments comments={data} currentUser={user}></Comments>
+          <Comments
+            comments={data}
+            currentUser={user}
+            ref={commentRef}
+          ></Comments>
           <NewComment
             currentUser={user}
             addNewComment={updateData}

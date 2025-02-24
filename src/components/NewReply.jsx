@@ -4,11 +4,12 @@ import { ModalContext } from "../App";
 export const NewReplyField = ({
   currentUser,
   commentId,
-  commentReplies,
   replyingTo,
   replying,
   updateReplying,
   updateReplies,
+  isReply,
+  sourceComment,
 }) => {
   const [replyContent, setReplyContent] = useState("");
   const { data, setData } = useContext(ModalContext);
@@ -29,13 +30,14 @@ export const NewReplyField = ({
         />
         <button
           onClick={() => {
+            let newComment = isReply
+              ? data.filter((prd) => prd.id === sourceComment)[0]
+              : data.filter((prd) => prd.id === commentId)[0];
             // update the replies list of the comment
-            let comment = data.filter((prd) => prd.id == commentId)[0];
-            let commentIndex = data.findIndex((prd) => prd.id == commentId);
-            console.log(comment);
+            let commentIndex = data.findIndex((prd) => prd.id === commentId);
 
             let newReplies = [
-              ...comment.replies,
+              ...newComment.replies,
               {
                 id: Date.now().toString(),
                 content: replyContent,
@@ -46,16 +48,19 @@ export const NewReplyField = ({
               },
             ];
 
-            console.log(newReplies);
-
-            comment.replies = newReplies;
+            newComment.replies = newReplies;
             // // put replies into the comment in db
             const patchJson = async () => {
-              await fetch(`http://localhost:4000/comments/${commentId}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(comment),
-              })
+              await fetch(
+                `http://localhost:4000/comments/${
+                  isReply ? sourceComment : commentId
+                }`,
+                {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(newComment),
+                }
+              )
                 .then((res) => res.json())
                 .catch((err) => console.error(err));
             };

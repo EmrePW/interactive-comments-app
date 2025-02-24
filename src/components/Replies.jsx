@@ -1,7 +1,12 @@
 import React from "react";
 import { Reply } from "./Reply";
 
-export const Replies = ({ replies, currentUser, sourceComment }) => {
+export const Replies = ({
+  replies,
+  currentUser,
+  sourceComment,
+  updateReplies,
+}) => {
   const replyList = replies.map((rpl) => {
     return (
       <Reply
@@ -15,6 +20,7 @@ export const Replies = ({ replies, currentUser, sourceComment }) => {
         replyingTo={rpl.replyingTo}
         currentUser={currentUser}
         sourceComment={sourceComment}
+        updateReplies={updateReplies}
       ></Reply>
     );
   });

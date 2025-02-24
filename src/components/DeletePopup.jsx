@@ -1,7 +1,8 @@
-import { React, useContext } from "react";
+import { React, useContext, useRef } from "react";
 import { ModalContext } from "../App";
+import { Comment } from "./Comment";
 
-export const DeletePopup = ({ id, updateData, comments }) => {
+export const DeletePopup = ({ id, updateData, comments, updateReplies }) => {
   const {
     showDeletePopup,
     setDeletePopup,
@@ -10,6 +11,7 @@ export const DeletePopup = ({ id, updateData, comments }) => {
     replyBeingDeletedId,
     setReplyBeingDeletedId,
   } = useContext(ModalContext);
+
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black-alpha-50 z-4">
       <div
@@ -27,6 +29,7 @@ export const DeletePopup = ({ id, updateData, comments }) => {
             type="button"
             onClick={() => {
               console.log("clicked no!");
+              console.log(commentRef.current);
               setDeletePopup(!showDeletePopup);
             }}
           >
@@ -50,8 +53,7 @@ export const DeletePopup = ({ id, updateData, comments }) => {
                       commentIndex
                     ].replies.filter((prd) => prd.id != replyBeingDeletedId);
                     // update the comments with the new replies list
-                    updateData(newComments);
-
+                    updateReplies(newComments[commentIndex].replies);
                     //put back into db
                     await fetch(`http://localhost:4000/comments/${id}`, {
                       method: "PUT",
