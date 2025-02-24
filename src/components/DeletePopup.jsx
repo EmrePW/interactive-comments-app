@@ -29,7 +29,6 @@ export const DeletePopup = ({ id, updateData, comments, updateReplies }) => {
             type="button"
             onClick={() => {
               console.log("clicked no!");
-              console.log(commentRef.current);
               setDeletePopup(!showDeletePopup);
             }}
           >

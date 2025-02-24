@@ -57,7 +57,7 @@ export const Comment = forwardRef(
       <>
         <section className="comment flex p-3 align-items-start gap-3 surface-0 border-round-lg">
           <section className="votes surface-100 p-2 border-round-lg flex flex-column align-items-center">
-            <Votes vote={vote}></Votes>
+            <Votes vote={vote} sourceComment={id}></Votes>
           </section>
           <section className="comment_head flex-1">
             <div className="flex justify-content-between align-items-center mb-3">

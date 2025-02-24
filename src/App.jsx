@@ -35,7 +35,6 @@ const App = () => {
         console.error("Error fetching data", error);
       } finally {
         setLoading(false);
-        console.log(commentRef);
       }
     };
     fetchData();
