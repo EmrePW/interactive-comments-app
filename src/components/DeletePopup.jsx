@@ -2,7 +2,14 @@ import { React, useContext } from "react";
 import { ModalContext } from "../App";
 
 export const DeletePopup = ({ id, updateData, comments }) => {
-  const { showDeletePopup, setDeletePopup } = useContext(ModalContext);
+  const {
+    showDeletePopup,
+    setDeletePopup,
+    deletingReply,
+    setDeletingReply,
+    replyBeingDeletedId,
+    setReplyBeingDeletedId,
+  } = useContext(ModalContext);
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black-alpha-50 z-4">
       <div
@@ -19,8 +26,6 @@ export const DeletePopup = ({ id, updateData, comments }) => {
             className="surface-600 text-white border-none px-4 py-3 font-semibold text-l border-round-lg cursor-pointer flex-1"
             type="button"
             onClick={() => {
-              let deleteState;
-              console.log(deleteState);
               console.log("clicked no!");
               setDeletePopup(!showDeletePopup);
             }}
@@ -32,17 +37,40 @@ export const DeletePopup = ({ id, updateData, comments }) => {
             type="button"
             onClick={() => {
               console.log("clicked yes!");
-              // update data
-              // update json
-              // set delete to false
               const deleteCommentInDb = async (cid) => {
                 try {
-                  await fetch(`http://localhost:4000/comments/${cid}`, {
-                    method: "DELETE",
-                  })
-                    .then((response) => response.json())
-                    .then((data) => console.log("Deleted successfully", data))
-                    .catch((error) => console.error("Error:", error));
+                  if (deletingReply) {
+                    // get the comment
+                    const newComments = comments;
+                    const commentIndex = newComments.findIndex(
+                      (prd) => prd.id == id
+                    );
+                    // delete the reply from the replies list of the comment
+                    newComments[commentIndex].replies = newComments[
+                      commentIndex
+                    ].replies.filter((prd) => prd.id != replyBeingDeletedId);
+                    // update the comments with the new replies list
+                    updateData(newComments);
+
+                    //put back into db
+                    await fetch(`http://localhost:4000/comments/${id}`, {
+                      method: "PUT",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      // patch replies
+                      body: JSON.stringify(newComments[commentIndex]),
+                    }).catch((err) => console.log(err));
+                  } else {
+                    await fetch(`http://localhost:4000/comments/${cid}`, {
+                      method: "DELETE",
+                    })
+                      .then((response) => response.json())
+                      .then((data) => console.log("Deleted successfully", data))
+                      .catch((error) => console.error("Error:", error));
+
+                    updateData(comments.filter((prd) => prd.id !== cid));
+                  }
                 } catch (err) {
                   console.error(
                     "An error has occured while deleting comment with id " +
@@ -52,8 +80,6 @@ export const DeletePopup = ({ id, updateData, comments }) => {
                   );
                 } finally {
                   setDeletePopup(!showDeletePopup);
-                  // update data
-                  updateData(comments.filter((prd) => prd.id !== cid));
                 }
               };
               deleteCommentInDb(id);

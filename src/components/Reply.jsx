@@ -50,7 +50,11 @@ export const Reply = ({
           </div>
           {renderYou ? (
             <div className="flex gap-3">
-              <DeleteCommentButton id={id} />
+              <DeleteCommentButton
+                id={id}
+                sourceComment={sourceComment}
+                isReply={true}
+              />
               <EditCommentButton
                 updateEditingState={updateEditingState}
                 editing={editing}

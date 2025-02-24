@@ -51,6 +51,7 @@ export const NewComment = ({ currentUser, addNewComment, comments }) => {
                 console.error("error in post");
               } finally {
                 addNewComment([...new_comments, new_comment]); // setData()
+                setNewCommentContent("");
               }
             };
             postJson();

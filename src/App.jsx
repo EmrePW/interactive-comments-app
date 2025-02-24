@@ -13,6 +13,8 @@ const App = () => {
   const [showDeletePopup, setDeletePopup] = useState(false); // track delete modal
 
   const [commentBeingDeletedId, setId] = useState(null);
+  const [deletingReply, setDeletingReply] = useState(null);
+  const [replyBeingDeletedId, setReplyBeingDeletedId] = useState(null);
 
   const updateData = (newData) => {
     setData(newData);
@@ -47,13 +49,23 @@ const App = () => {
   }
   return (
     <ModalContext.Provider
-      value={{ showDeletePopup, setDeletePopup, commentBeingDeletedId, setId }}
+      value={{
+        showDeletePopup,
+        setDeletePopup,
+        commentBeingDeletedId,
+        setId,
+        deletingReply,
+        setDeletingReply,
+        replyBeingDeletedId,
+        setReplyBeingDeletedId,
+      }}
     >
       <main className="">
         <section className="main-wrapper surface-100 px-3">
           {showDeletePopup && (
             <DeletePopup
               id={commentBeingDeletedId}
+              replyBeingDeletedId={replyBeingDeletedId}
               updateData={updateData}
               comments={data}
             />

@@ -57,7 +57,7 @@ export const EditCommentField = ({
                 newComment.replies = newReplies;
 
                 //put back into db
-                fetch(`http://localhost:4000/comments/${sourceComment}`, {
+                await fetch(`http://localhost:4000/comments/${sourceComment}`, {
                   method: "PUT",
                   headers: {
                     "Content-Type": "application/json",
